@@ -59,3 +59,59 @@ BEGIN
     INSERT INTO sale_items (sale_id, product_id, quantity, unit_price, total_price)
     VALUES (sale_id, v_product_id, 1, 45.00, 45.00);
 END $$;
+
+-- 5. Ensure a shop exists, add suppliers, purchase orders and stock audits
+DO $$
+DECLARE
+    v_shop_id UUID;
+    v_supplier_id UUID;
+    v_po_id UUID;
+    v_product_id UUID;
+    v_audit_id UUID;
+    v_prev_qty INT;
+BEGIN
+    -- ensure a demo shop exists for single-tenant seeds
+    SELECT id INTO v_shop_id FROM shops LIMIT 1;
+    IF v_shop_id IS NULL THEN
+        INSERT INTO shops (name, currency, created_at) VALUES ('Demo Shop', 'USD', NOW()) RETURNING id INTO v_shop_id;
+    END IF;
+
+    -- create a sample supplier
+    INSERT INTO suppliers (shop_id, name, contact_person, phone, email, address)
+    VALUES (v_shop_id, 'Acme Pharmaceuticals', 'John Doe', '+123456789', 'sales@acmepharma.example', '123 Supply Street')
+    RETURNING id INTO v_supplier_id;
+
+    -- set expiry & lot for a product and create a purchase order
+    SELECT id INTO v_product_id FROM products WHERE sku = 'AMX-001' LIMIT 1;
+    IF v_product_id IS NOT NULL THEN
+        UPDATE products SET expiry_date = '2026-12-31', lot_number = 'LOT-2026-001' WHERE id = v_product_id;
+
+        INSERT INTO purchase_orders (shop_id, supplier_id, status, total_amount)
+        VALUES (v_shop_id, v_supplier_id, 'ordered', 400.00)
+        RETURNING id INTO v_po_id;
+
+        INSERT INTO purchase_order_items (purchase_order_id, product_id, quantity, unit_price, total_price)
+        VALUES (v_po_id, v_product_id, 100, 4.00, 400.00);
+
+        -- simulate receiving part of the order by increasing stock
+        UPDATE products SET stock_quantity = COALESCE(stock_quantity,0) + 100 WHERE id = v_product_id;
+    END IF;
+
+    -- create a simple stock audit reflecting the current quantities
+    INSERT INTO stock_audits (shop_id, performed_by, notes)
+    VALUES (v_shop_id, NULL, 'Initial stocktake created by seed') RETURNING id INTO v_audit_id;
+
+    SELECT id, stock_quantity INTO v_product_id, v_prev_qty FROM products WHERE sku = 'PAN-001' LIMIT 1;
+    IF v_product_id IS NOT NULL THEN
+        INSERT INTO stock_audit_items (stock_audit_id, product_id, recorded_quantity, previous_quantity, adjustment)
+        VALUES (v_audit_id, v_product_id, GREATEST(0, COALESCE(v_prev_qty,0)), COALESCE(v_prev_qty,0), 0);
+    END IF;
+
+    -- add another audit item for the product we received
+    SELECT id, stock_quantity INTO v_product_id, v_prev_qty FROM products WHERE sku = 'AMX-001' LIMIT 1;
+    IF v_product_id IS NOT NULL THEN
+        INSERT INTO stock_audit_items (stock_audit_id, product_id, recorded_quantity, previous_quantity, adjustment)
+        VALUES (v_audit_id, v_product_id, COALESCE(v_prev_qty,0), COALESCE(v_prev_qty,0), 0);
+    END IF;
+END $$;
+
