@@ -24,21 +24,27 @@ export default function SettingsPage() {
     const [shop, setShop] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
+    const [error, setError] = useState<string | null>(null);
     const { toast, showToast, hideToast } = useToast();
 
     useEffect(() => {
-        async function load() {
-            try {
-                const data = await getShopDetails();
-                setShop(data);
-            } catch (err: any) {
-                showToast(err.message || "Failed to load settings", "error");
-            } finally {
-                setLoading(false);
-            }
-        }
-        load();
+        loadShop();
     }, []);
+
+    const loadShop = async () => {
+        try {
+            setError(null);
+            const data = await getShopDetails();
+            setShop(data);
+        } catch (err: any) {
+            console.error("Settings load error:", err);
+            const errorMsg = err.message || "Failed to load settings. Please check your database connection.";
+            setError(errorMsg);
+            showToast(errorMsg, "error");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleSave = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -72,15 +78,27 @@ export default function SettingsPage() {
                 <Sidebar />
                 <main className="flex-1 flex flex-col min-w-0">
                     <Header title="System Settings" />
-                    <div className="flex-1 flex flex-col items-center justify-center gap-4">
-                        <Loader2 className="animate-spin text-text-disabled" size={40} />
-                        <p className="font-bold text-text-disabled uppercase tracking-widest text-sm">Failed to retrieve shop configuration.</p>
-                        <button
-                            onClick={() => window.location.reload()}
-                            className="text-secondary font-black hover:underline uppercase text-xs"
-                        >
-                            Retry Connection
-                        </button>
+                    <div className="flex-1 flex flex-col items-center justify-center gap-4 px-4">
+                        {loading ? (
+                            <>
+                                <Loader2 className="animate-spin text-text-disabled" size={40} />
+                                <p className="font-bold text-text-disabled uppercase tracking-widest text-sm">Loading shop configuration...</p>
+                            </>
+                        ) : (
+                            <>
+                                <HelpCircle className="text-error" size={48} />
+                                <p className="font-bold text-text-primary uppercase tracking-widest text-sm text-center">Failed to retrieve shop configuration.</p>
+                                {error && (
+                                    <p className="text-xs text-text-secondary text-center max-w-md">{error}</p>
+                                )}
+                                <button
+                                    onClick={loadShop}
+                                    className="text-secondary font-black hover:underline uppercase text-xs mt-4"
+                                >
+                                    Retry Connection
+                                </button>
+                            </>
+                        )}
                     </div>
                 </main>
             </div>
