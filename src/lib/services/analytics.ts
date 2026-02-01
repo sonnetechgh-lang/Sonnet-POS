@@ -87,6 +87,7 @@ export async function getAdvancedAnalytics(startDate?: string) {
             total_amount, 
             created_at, 
             customer_id,
+            customer_name,
             sale_items (
                 product_id,
                 quantity,
@@ -96,7 +97,7 @@ export async function getAdvancedAnalytics(startDate?: string) {
                     categories (name)
                 )
             ),
-            customers (name)
+            customers (full_name)
         `)
         .eq('status', 'completed');
 
@@ -144,7 +145,11 @@ export async function getAdvancedAnalytics(startDate?: string) {
         if (sale.customer_id) {
             const cid = sale.customer_id;
             if (!customerStats[cid]) {
-                customerStats[cid] = { name: sale.customers?.name || 'Guest', spend: 0, visits: 0 };
+                // Get customer name from the relationship or use customer_name or default to 'Guest'
+                const customerName = sale.customers && Array.isArray(sale.customers) && sale.customers.length > 0
+                    ? (sale.customers[0] as any)?.full_name
+                    : sale.customer_name || 'Guest';
+                customerStats[cid] = { name: customerName, spend: 0, visits: 0 };
             }
             customerStats[cid].spend += Number(sale.total_amount);
             customerStats[cid].visits += 1;
