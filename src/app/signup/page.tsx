@@ -5,16 +5,43 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { User, Mail, Lock, ShoppingBag, ArrowRight, Loader2, Smartphone, CheckCircle2 } from "lucide-react";
 
+import { createClient } from "@/lib/supabase/client";
+
 export default function SignupPage() {
+    const supabase = createClient();
     const [loading, setLoading] = useState(false);
     const [step, setStep] = useState(1);
 
-    const handleNext = (e: React.FormEvent) => {
+    const [fullName, setFullName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirm, setConfirm] = useState("");
+    const [businessName, setBusinessName] = useState("");
+    const [phone, setPhone] = useState("");
+
+    const handleNext = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (step < 2) setStep(step + 1);
-        else {
-            setLoading(true);
-            setTimeout(() => setLoading(false), 2000);
+        if (step < 2) {
+            setStep(step + 1);
+            return;
+        }
+
+        if (password !== confirm) {
+            alert("Passwords do not match");
+            return;
+        }
+
+        setLoading(true);
+        try {
+            const redirectTo = typeof window !== "undefined" ? `${window.location.origin}/auth/verify?email=${encodeURIComponent(email)}` : undefined;
+            // Supabase v2 signUp syntax
+            const { error } = await supabase.auth.signUp({ email, password }, { emailRedirectTo: redirectTo });
+            if (error) throw error;
+            // Optionally store profile/shop details via RPC or separate call after verification
+            window.location.href = `/auth/verify?email=${encodeURIComponent(email)}`;
+        } catch (err: any) {
+            alert(err.message || "Failed to register");
+            setLoading(false);
         }
     };
 
