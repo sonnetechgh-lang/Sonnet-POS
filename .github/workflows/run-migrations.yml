@@ -1,0 +1,51 @@
+name: Run DB Migrations
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  backup-and-migrate:
+    name: Backup and apply migrations
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install PostgreSQL client
+        run: sudo apt-get update && sudo apt-get install -y postgresql-client
+
+      - name: Create backup directory
+        run: mkdir -p backups
+
+      - name: Create DB backup
+        run: |
+          TIMESTAMP=$(date -u +"%Y%m%dT%H%M%SZ")
+          pg_dump "$DATABASE_URL" -Fc -f "backups/sonnet-prod-${TIMESTAMP}.dump"
+
+      - name: Apply migrations
+        run: |
+          for file in migrations/*.sql; do
+            echo "Applying $file";
+            psql "$DATABASE_URL" -f "$file";
+          done
+
+      - name: Run smoke tests (optional)
+        run: |
+          npm ci
+          npm test -- --run
+
+      - name: Upload backup artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sonnet-prod-backup
+          path: backups
+
+    # Add a manual approval step for push to main when desired (left out by default)

@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react';
+import React from 'react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
 import ProductSelect from '../ProductSelect';
@@ -68,15 +69,18 @@ describe('ProductSelect component', () => {
     input.focus();
 
     // type 'a' -> highlight first match
+    let firstSelected: HTMLElement | undefined;
     await user.keyboard('a');
-    const opts1 = await screen.findAllByRole('option');
-    const firstSelected = opts1.find((o) => o.getAttribute('aria-selected') === 'true');
-    expect(firstSelected).toBeDefined();
+    await waitFor(async () => {
+      const opts1 = await screen.findAllByRole('option');
+      firstSelected = opts1.find((o) => o.getAttribute('aria-selected') === 'true') as HTMLElement | undefined;
+      expect(firstSelected).toBeDefined();
+    });
 
     // type 'a' again to cycle
     await user.keyboard('a');
     const opts2 = await screen.findAllByRole('option');
-    const secondSelected = opts2.filter((o) => o.getAttribute('aria-selected') === 'true')[0];
+    const secondSelected = opts2.find((o) => o.getAttribute('aria-selected') === 'true') as HTMLElement | undefined;
     expect(secondSelected).toBeDefined();
     // ensure the selected index changed
     expect(secondSelected).not.toEqual(firstSelected);

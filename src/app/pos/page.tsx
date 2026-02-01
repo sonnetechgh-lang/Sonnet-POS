@@ -154,7 +154,10 @@ export default function POSPage() {
             const freshProducts = await getProducts();
             setProducts(freshProducts || []);
         } catch (err: any) {
-            showToast("Checkout failed", "error");
+            // surface error details to help debugging while keeping the UI friendly
+            // eslint-disable-next-line no-console
+            console.error('createSale error', err);
+            showToast(err?.message || "Checkout failed", "error");
         } finally {
             setCheckoutLoading(false);
         }
