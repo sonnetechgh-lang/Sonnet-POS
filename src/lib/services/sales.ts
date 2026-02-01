@@ -1,5 +1,13 @@
 import { createClient } from "@/lib/supabase/client";
 
+/** Normalize Supabase/Postgrest errors to a clear string for the UI */
+function toErrorMessage(err: unknown): string {
+    if (err == null) return "Checkout failed.";
+    const obj = err as { message?: string; details?: string; hint?: string; code?: string };
+    const msg = obj?.message ?? obj?.details ?? String(err);
+    return msg.trim() || "Checkout failed.";
+}
+
 export async function createSale(sale: any, items: any[]) {
     const supabase = createClient();
 
@@ -10,7 +18,6 @@ export async function createSale(sale: any, items: any[]) {
 
         if (userId) {
             sale.staff_id = sale.staff_id || userId;
-            // try to fetch profile to get shop_id
             const { data: profile, error: profileError } = await supabase
                 .from('profiles')
                 .select('shop_id')
@@ -20,30 +27,36 @@ export async function createSale(sale: any, items: any[]) {
             if (!profileError && profile?.shop_id) {
                 sale.shop_id = sale.shop_id || profile.shop_id;
             }
+            // When user is logged in but profile has no shop_id, use first shop so RLS can pass
+            if (!sale.shop_id) {
+                const { data: firstShop } = await supabase
+                    .from('shops')
+                    .select('id')
+                    .limit(1)
+                    .maybeSingle();
+                if (firstShop?.id) {
+                    sale.shop_id = firstShop.id;
+                }
+            }
         }
     } catch (e) {
-        // non-fatal; continue but leave sale as-is
         // eslint-disable-next-line no-console
-        console.warn('createSale: failed to fetch user/profile context', e);
+        console.warn('createSale: failed to fetch user/profile/shop context', e);
     }
 
     // 1. Create the sale record
     let saleData: any = null;
     let saleError: any = null;
 
-    // First attempt: insert and return the full row
     ({ data: saleData, error: saleError } = await supabase
         .from('sales')
         .insert([sale])
         .select()
         .single());
 
-    // If the error mentions schema cache (common when DB migrations were not applied),
-    // try a minimal insert (select only id) and return a clearer message if that fails.
     if (saleError) {
-        const msg = String(saleError?.message || saleError);
-        if (msg.toLowerCase().includes('schema cache') || msg.toLowerCase().includes("could not find")) {
-            // Try a minimal insert to surface a more specific error or succeed without schema joins
+        const msg = String(saleError?.message ?? saleError?.details ?? saleError).toLowerCase();
+        if (msg.includes('schema cache') || msg.includes("could not find")) {
             const { data: minimalData, error: minimalError } = await supabase
                 .from('sales')
                 .insert([sale])
@@ -51,18 +64,13 @@ export async function createSale(sale: any, items: any[]) {
                 .single();
 
             if (minimalError) {
-                // Help developer: suggest running DB migrations/seeds
                 throw new Error(
-                    `Database schema mismatch: ${minimalError?.message || minimalError}. ` +
-                    `Run the SQL migrations in docs/schema.sql and re-seed with docs/seed.sql, then restart Supabase.`
+                    `Database schema mismatch. Run migrations in docs/schema.sql and docs/seed.sql. ${toErrorMessage(minimalError)}`
                 );
             }
-
-            // we got minimal data — but the full row isn't available; use the minimal id wrapper
             saleData = minimalData;
-            saleError = null;
         } else {
-            throw saleError;
+            throw new Error(toErrorMessage(saleError));
         }
     }
 
@@ -80,17 +88,20 @@ export async function createSale(sale: any, items: any[]) {
         .from('sale_items')
         .insert(saleItems);
 
-    if (itemsError) throw itemsError;
+    if (itemsError) throw new Error(toErrorMessage(itemsError));
 
-    // 3. Update inventory levels; check RPC errors explicitly
+    // 3. Update inventory levels via RPC
     for (const item of items) {
-        const { data: rpcData, error: rpcError } = await supabase.rpc('decrement_stock', {
+        const { error: rpcError } = await supabase.rpc('decrement_stock', {
             row_id: item.id,
             count: item.quantity
         });
         if (rpcError) {
-            // try to roll back by throwing; caller can retry or handle
-            throw rpcError;
+            throw new Error(
+                rpcError.message?.includes('decrement_stock')
+                    ? `Stock update failed. Ensure the database has the decrement_stock function (see docs/schema.sql). ${toErrorMessage(rpcError)}`
+                    : toErrorMessage(rpcError)
+            );
         }
     }
 

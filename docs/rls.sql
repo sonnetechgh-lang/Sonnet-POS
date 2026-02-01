@@ -73,5 +73,27 @@ ON stock_audit_items FOR ALL USING (
   )
 );
 
+-- Sales and sale_items: allow access when record belongs to user's shop or has no shop (dev/demo)
+ALTER TABLE IF EXISTS sales ENABLE ROW LEVEL SECURITY;
+ALTER TABLE IF EXISTS sale_items ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY IF NOT EXISTS "users_access_own_shop_sales"
+ON sales FOR ALL USING (
+  (shop_id IS NULL) OR
+  (auth.uid() IS NOT NULL AND (
+    EXISTS (SELECT 1 FROM profiles p WHERE p.id = auth.uid() AND p.shop_id = sales.shop_id)
+  ))
+);
+
+CREATE POLICY IF NOT EXISTS "users_access_own_shop_sale_items"
+ON sale_items FOR ALL USING (
+  EXISTS (
+    SELECT 1 FROM sales s
+    LEFT JOIN profiles p ON p.id = auth.uid()
+    WHERE s.id = sale_items.sale_id
+    AND (s.shop_id IS NULL OR (p.shop_id IS NOT NULL AND s.shop_id = p.shop_id))
+  )
+);
+
 -- Be sure to test these policies carefully in staging and adapt them to any admin or role-based exceptions you require.
 
