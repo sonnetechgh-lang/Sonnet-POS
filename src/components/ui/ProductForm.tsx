@@ -76,14 +76,14 @@ export function ProductForm({ onSuccess, onCancel, initialData }: ProductFormPro
     };
 
     return (
-        <form className="space-y-8" onSubmit={handleSubmit}>
+        <form className="space-y-6 md:space-y-8" onSubmit={handleSubmit}>
             <section className="space-y-4">
                 <header className="flex items-center gap-2 text-secondary">
                     <Info size={18} />
                     <h4 className="text-sm font-black uppercase tracking-widest">Basic Information</h4>
                 </header>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
                     <div className="space-y-1.5 flex-1">
                         <label className="text-xs font-bold text-text-primary ml-1">Product Name *</label>
                         <div className="relative group">
@@ -95,7 +95,7 @@ export function ProductForm({ onSuccess, onCancel, initialData }: ProductFormPro
                                 type="text"
                                 required
                                 placeholder="e.g., Cerave Facial Cleanser"
-                                className="w-full pl-12 pr-4 py-3 bg-background-app/50 border border-border rounded-2xl text-sm focus:outline-none focus:ring-4 focus:ring-secondary/10 focus:border-secondary transition-all"
+                                className="w-full pl-12 pr-4 py-2.5 md:py-3 bg-background-app/50 border border-border rounded-2xl text-sm focus:outline-none focus:ring-4 focus:ring-secondary/10 focus:border-secondary transition-all"
                             />
                         </div>
                     </div>
@@ -110,7 +110,7 @@ export function ProductForm({ onSuccess, onCancel, initialData }: ProductFormPro
                                 onChange={handleChange}
                                 type="text"
                                 placeholder="e.g., CER-001"
-                                className="w-full pl-12 pr-4 py-3 bg-background-app/50 border border-border rounded-2xl text-sm focus:outline-none focus:ring-4 focus:ring-secondary/10 focus:border-secondary transition-all"
+                                className="w-full pl-12 pr-4 py-2.5 md:py-3 bg-background-app/50 border border-border rounded-2xl text-sm focus:outline-none focus:ring-4 focus:ring-secondary/10 focus:border-secondary transition-all"
                             />
                         </div>
                     </div>
@@ -124,7 +124,7 @@ export function ProductForm({ onSuccess, onCancel, initialData }: ProductFormPro
                             name="category_id"
                             value={formData.category_id}
                             onChange={handleChange}
-                            className="w-full pl-12 pr-4 py-3 bg-background-app/50 border border-border rounded-2xl text-sm focus:outline-none focus:ring-4 focus:ring-secondary/10 focus:border-secondary transition-all appearance-none cursor-pointer"
+                            className="w-full pl-12 pr-4 py-2.5 md:py-3 bg-background-app/50 border border-border rounded-2xl text-sm focus:outline-none focus:ring-4 focus:ring-secondary/10 focus:border-secondary transition-all appearance-none cursor-pointer"
                         >
                             <option value="">Select a category...</option>
                             {categories.map((cat: any) => (
@@ -141,7 +141,7 @@ export function ProductForm({ onSuccess, onCancel, initialData }: ProductFormPro
                     <h4 className="text-sm font-black uppercase tracking-widest">Pricing & Stock</h4>
                 </header>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
                     <div className="space-y-1.5">
                         <label className="text-xs font-bold text-text-primary ml-1">Selling Price (GHS) *</label>
                         <input
@@ -152,7 +152,7 @@ export function ProductForm({ onSuccess, onCancel, initialData }: ProductFormPro
                             step="0.01"
                             required
                             placeholder="0.00"
-                            className="w-full px-4 py-3 bg-background-app/50 border border-border rounded-2xl text-sm font-bold focus:outline-none focus:ring-4 focus:ring-secondary/10 focus:border-secondary transition-all"
+                            className="w-full px-4 py-2.5 md:py-3 bg-background-app/50 border border-border rounded-2xl text-sm font-bold focus:outline-none focus:ring-4 focus:ring-secondary/10 focus:border-secondary transition-all"
                         />
                     </div>
                     <div className="space-y-1.5">
@@ -164,12 +164,12 @@ export function ProductForm({ onSuccess, onCancel, initialData }: ProductFormPro
                             type="number"
                             step="0.01"
                             placeholder="0.00"
-                            className="w-full px-4 py-3 bg-background-app/50 border border-border rounded-2xl text-sm font-bold focus:outline-none focus:ring-4 focus:ring-secondary/10 focus:border-secondary transition-all"
+                            className="w-full px-4 py-2.5 md:py-3 bg-background-app/50 border border-border rounded-2xl text-sm font-bold focus:outline-none focus:ring-4 focus:ring-secondary/10 focus:border-secondary transition-all"
                         />
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
                     <div className="space-y-1.5">
                         <label className="text-xs font-bold text-text-primary ml-1">Stock Quantity</label>
                         <input
@@ -178,7 +178,7 @@ export function ProductForm({ onSuccess, onCancel, initialData }: ProductFormPro
                             onChange={handleChange}
                             type="number"
                             placeholder="0"
-                            className="w-full px-4 py-3 bg-background-app/50 border border-border rounded-2xl text-sm font-bold focus:outline-none focus:ring-4 focus:ring-secondary/10 focus:border-secondary transition-all"
+                            className="w-full px-4 py-2.5 md:py-3 bg-background-app/50 border border-border rounded-2xl text-sm font-bold focus:outline-none focus:ring-4 focus:ring-secondary/10 focus:border-secondary transition-all"
                         />
                     </div>
                     <div className="space-y-1.5">
@@ -188,24 +188,24 @@ export function ProductForm({ onSuccess, onCancel, initialData }: ProductFormPro
                             value={formData.low_stock_threshold}
                             onChange={handleChange}
                             type="number"
-                            className="w-full px-4 py-3 bg-background-app/50 border border-border rounded-2xl text-sm font-bold focus:outline-none focus:ring-4 focus:ring-secondary/10 focus:border-secondary transition-all"
+                            className="w-full px-4 py-2.5 md:py-3 bg-background-app/50 border border-border rounded-2xl text-sm font-bold focus:outline-none focus:ring-4 focus:ring-secondary/10 focus:border-secondary transition-all"
                         />
                     </div>
                 </div>
             </section>
 
-            <div className="pt-4 flex gap-3">
+            <div className="pt-4 flex gap-2 md:gap-3">
                 <button
                     type="button"
                     onClick={onCancel}
-                    className="flex-1 py-4 px-6 border border-border rounded-2xl font-bold text-text-secondary hover:bg-gray-50 transition-all"
+                    className="flex-1 py-3 md:py-4 px-4 md:px-6 border border-border rounded-2xl font-bold text-text-secondary hover:bg-gray-50 transition-all text-sm md:text-base"
                 >
                     Cancel
                 </button>
                 <button
                     type="submit"
                     disabled={loading}
-                    className="flex-[2] py-4 px-6 bg-secondary hover:bg-secondary-dark text-white rounded-2xl font-black shadow-xl shadow-secondary/20 transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2"
+                    className="flex-[2] py-3 md:py-4 px-4 md:px-6 bg-secondary hover:bg-secondary-dark text-white rounded-2xl font-black shadow-xl shadow-secondary/20 transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2 text-sm md:text-base"
                 >
                     {loading && <Loader2 className="animate-spin" size={20} />}
                     {loading ? "Saving..." : (initialData ? "Update Product" : "Save Product")}

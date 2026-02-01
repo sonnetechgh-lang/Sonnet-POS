@@ -59,15 +59,15 @@ export default function Dashboard() {
     };
 
     return (
-        <div className="flex bg-background-app min-h-screen text-text-primary">
+        <div className="flex bg-background-app min-h-screen text-text-primary flex-col md:flex-row">
             <Sidebar />
 
             <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
                 <Header title="Business Overview" />
 
-                <div className="flex-1 overflow-y-auto p-4 md:p-8 space-y-8 max-w-[1600px] mx-auto w-full">
+                <div className="flex-1 overflow-y-auto p-3 md:p-4 lg:p-8 space-y-6 md:space-y-8 max-w-[1600px] mx-auto w-full">
                     {/* Hero Sections / Key Stats */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
                         <StatCard
                             label="Total Revenue"
                             value={`₵${stats.totalSales.toFixed(2)}`}
@@ -102,15 +102,15 @@ export default function Dashboard() {
                         />
                     </div>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
                         {/* Sales Chart Placeholder / Visual */}
-                        <div className="lg:col-span-2 bg-white rounded-[40px] p-8 border border-border shadow-sm flex flex-col">
-                            <div className="flex justify-between items-center mb-8">
+                        <div className="lg:col-span-2 bg-white rounded-2xl md:rounded-3xl lg:rounded-[40px] p-4 md:p-6 lg:p-8 border border-border shadow-sm flex flex-col">
+                            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 md:mb-8">
                                 <div>
-                                    <h3 className="text-xl font-black text-primary tracking-tight">Revenue Performance</h3>
-                                    <p className="text-xs text-text-secondary font-bold uppercase tracking-widest mt-1">Last 7 Days vs Previous</p>
+                                    <h3 className="text-lg md:text-xl font-black text-primary tracking-tight">Revenue Performance</h3>
+                                    <p className="text-[10px] text-text-secondary font-bold uppercase tracking-widest mt-1">Last 7 Days vs Previous</p>
                                 </div>
-                                <div className="flex gap-2">
+                                <div className="flex gap-2 flex-wrap">
                                     <div className="flex items-center gap-2 px-3 py-1 bg-background-app rounded-full text-[10px] font-bold">
                                         <div className="w-2 h-2 rounded-full bg-secondary"></div> Sales
                                     </div>
@@ -120,7 +120,7 @@ export default function Dashboard() {
                                 </div>
                             </div>
 
-                            <div className="flex-1 flex items-end justify-between gap-4 h-64 px-4">
+                            <div className="flex-1 flex items-end justify-between gap-2 md:gap-4 h-48 md:h-64 px-2 md:px-4">
                                 {stats.dailyTrends.map((day: any, i: number) => {
                                     const maxRevenue = Math.max(...stats.dailyTrends.map((d: any) => d.revenue)) || 1;
                                     const percentage = (day.revenue / maxRevenue) * 100;
@@ -135,7 +135,7 @@ export default function Dashboard() {
                                 })}
                             </div>
 
-                            <div className="flex justify-between mt-6 px-4 text-[10px] font-black text-text-disabled uppercase">
+                            <div className="flex justify-between mt-4 md:mt-6 px-2 md:px-4 text-[10px] font-black text-text-disabled uppercase">
                                 {stats.dailyTrends.map((day: any) => (
                                     <span key={day.date} className="flex-1 text-center">
                                         {new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' })}
@@ -145,50 +145,50 @@ export default function Dashboard() {
                         </div>
 
                         {/* Terminal Quick Link */}
-                        <div className="bg-primary rounded-[40px] p-8 text-white flex flex-col justify-between relative overflow-hidden shadow-2xl shadow-primary/20">
+                        <div className="bg-primary rounded-2xl md:rounded-3xl lg:rounded-[40px] p-4 md:p-6 lg:p-8 text-white flex flex-col justify-between relative overflow-hidden shadow-2xl shadow-primary/20">
                             <div className="absolute -top-10 -right-10 w-40 h-40 bg-secondary/10 rounded-full blur-3xl"></div>
                             <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-secondary/5 rounded-full blur-3xl"></div>
 
                             <div className="relative z-10">
-                                <div className="w-14 h-14 bg-white/10 backdrop-blur-md rounded-2xl flex items-center justify-center mb-6 border border-white/20">
-                                    <ShoppingCart size={28} className="text-secondary" />
+                                <div className="w-12 md:w-14 h-12 md:h-14 bg-white/10 backdrop-blur-md rounded-2xl flex items-center justify-center mb-4 md:mb-6 border border-white/20">
+                                    <ShoppingCart size={24} className="text-secondary" />
                                 </div>
-                                <h3 className="text-3xl font-black tracking-tight leading-tight mb-4">Ready to <br /> sell today?</h3>
-                                <p className="text-blue-100/60 font-medium mb-8">Access the POS terminal to process sales and manage orders.</p>
+                                <h3 className="text-2xl md:text-3xl font-black tracking-tight leading-tight mb-3 md:mb-4">Ready to <br /> sell today?</h3>
+                                <p className="text-sm md:text-base text-blue-100/60 font-medium mb-6 md:mb-8">Access the POS terminal to process sales and manage orders.</p>
                             </div>
 
-                            <Link href="/pos" className="relative z-10 w-full py-4 bg-secondary hover:bg-secondary-dark text-white font-black rounded-2xl flex items-center justify-center gap-3 transition-all group active:scale-[0.98]">
+                            <Link href="/pos" className="relative z-10 w-full py-3 md:py-4 bg-secondary hover:bg-secondary-dark text-white font-black rounded-2xl flex items-center justify-center gap-3 transition-all group active:scale-[0.98] text-sm md:text-base">
                                 Open POS Terminal
                                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
                             </Link>
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
                         {/* Recent Transactions */}
-                        <div className="bg-white rounded-[40px] border border-border shadow-sm overflow-hidden">
-                            <div className="px-8 py-6 border-b border-border flex justify-between items-center bg-gray-50/30">
-                                <h3 className="text-lg font-black text-primary">Recent Transactions</h3>
-                                <Link href="#" className="text-xs font-black text-secondary uppercase hover:underline">View All</Link>
+                        <div className="bg-white rounded-2xl md:rounded-3xl lg:rounded-[40px] border border-border shadow-sm overflow-hidden">
+                            <div className="px-4 md:px-8 py-4 md:py-6 border-b border-border flex justify-between items-center bg-gray-50/30">
+                                <h3 className="text-base md:text-lg font-black text-primary">Recent Transactions</h3>
+                                <Link href="#" className="text-[10px] md:text-xs font-black text-secondary uppercase hover:underline">View All</Link>
                             </div>
-                            <div className="p-2">
+                            <div className="p-2 md:p-3 max-h-96 overflow-y-auto">
                                 {stats.recentSales.length === 0 ? (
                                     <div className="py-12 text-center text-text-disabled uppercase text-[10px] font-bold tracking-widest leading-relaxed">
                                         No transactions yet.<br />Start selling in the Terminal.
                                     </div>
                                 ) : (
                                     stats.recentSales.map((sale: any, i: number) => (
-                                        <div key={i} className="flex items-center justify-between p-4 hover:bg-gray-50 rounded-3xl transition-all">
-                                            <div className="flex items-center gap-4">
-                                                <div className="w-10 h-10 rounded-xl bg-background-app flex items-center justify-center text-primary border border-border">
+                                        <div key={i} className="flex items-center justify-between p-3 md:p-4 hover:bg-gray-50 rounded-3xl transition-all">
+                                            <div className="flex items-center gap-3 md:gap-4 min-w-0">
+                                                <div className="w-10 h-10 rounded-xl bg-background-app flex items-center justify-center text-primary border border-border flex-shrink-0">
                                                     <Receipt size={18} />
                                                 </div>
-                                                <div>
-                                                    <p className="text-sm font-black text-primary">Sale #{sale.id?.slice(0, 6) || '---'}</p>
+                                                <div className="min-w-0">
+                                                    <p className="text-sm font-black text-primary truncate">Sale #{sale.id?.slice(0, 6) || '---'}</p>
                                                     <p className="text-[10px] font-bold text-text-disabled">{new Date(sale.created_at).toLocaleTimeString()}</p>
                                                 </div>
                                             </div>
-                                            <div className="text-right">
+                                            <div className="text-right flex-shrink-0 ml-2">
                                                 <p className="text-sm font-black text-accent">₵{sale.total_amount.toFixed(2)}</p>
                                                 <p className="text-[10px] font-bold text-text-disabled uppercase tracking-widest">Completed</p>
                                             </div>
