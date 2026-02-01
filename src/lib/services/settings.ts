@@ -10,24 +10,25 @@ export async function getShopDetails() {
             console.warn("Auth check warning:", authError);
         }
 
-        // In a multi-tenant app, we'd filter by the current user's shop_id.
-        // For this build, we'll fetch the first shop record.
-        let { data, error } = await supabase
+        // Fetch the first shop record - use limit(1) to ensure only one row
+        const { data: shops, error } = await supabase
             .from("shops")
             .select("*")
-            .maybeSingle();
+            .limit(1);
 
         if (error) {
             console.error("Error fetching shops:", error);
             throw new Error(`Failed to fetch shop details: ${error.message}`);
         }
 
+        let shop = shops && shops.length > 0 ? shops[0] : null;
+
         // If no shop exists, create a default one (fallback for local dev/seed)
-        if (!data) {
+        if (!shop) {
             console.log("No shop found, creating default shop...");
             
             // Attempt to create the shop with minimal required data
-            const { data: newShop, error: createError } = await supabase
+            const { data: createResult, error: createError } = await supabase
                 .from("shops")
                 .insert([{ 
                     name: "Sonnet POS Branch", 
@@ -35,38 +36,37 @@ export async function getShopDetails() {
                     address: "",
                     phone: ""
                 }])
-                .select()
-                .single();
+                .select();
 
             if (createError) {
                 console.error("Error creating shop:", createError);
                 
                 // If create fails, try fetching again in case another process created it
-                const { data: retryData, error: retryError } = await supabase
+                const { data: retryShops, error: retryError } = await supabase
                     .from("shops")
                     .select("*")
-                    .maybeSingle();
+                    .limit(1);
                 
                 if (retryError) {
                     throw new Error(`Failed to create default shop: ${createError.message}`);
                 }
                 
-                if (retryData) {
+                if (retryShops && retryShops.length > 0) {
                     console.log("Shop found after retry");
-                    return retryData;
+                    return retryShops[0];
                 }
                 
                 throw new Error(`Failed to create default shop: ${createError.message}`);
             }
             
-            if (!newShop) {
+            if (!createResult || createResult.length === 0) {
                 throw new Error("Failed to create shop - no data returned");
             }
             
-            return newShop;
+            return createResult[0];
         }
 
-        return data;
+        return shop;
     } catch (err: any) {
         console.error("getShopDetails error:", err);
         throw err;
@@ -81,19 +81,18 @@ export async function updateShopDetails(id: string, updates: any) {
             .from("shops")
             .update(updates)
             .eq("id", id)
-            .select()
-            .single();
+            .select();
 
         if (error) {
             console.error("Error updating shop:", error);
             throw new Error(`Failed to update shop details: ${error.message}`);
         }
 
-        if (!data) {
+        if (!data || data.length === 0) {
             throw new Error("Failed to update shop - no data returned");
         }
 
-        return data;
+        return data[0];
     } catch (err: any) {
         console.error("updateShopDetails error:", err);
         throw err;
