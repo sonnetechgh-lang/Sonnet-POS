@@ -59,25 +59,25 @@ export default function ReportsPage() {
         <div className="flex bg-background-app min-h-screen text-text-primary">
             <Sidebar />
 
-            <main className="flex-1 flex flex-col min-w-0">
+            <main className="flex-1 flex flex-col min-w-0 pl-14 md:pl-0 overflow-hidden">
                 <Header title="Business Intelligence & Reports" />
 
                 <div className="flex-1 overflow-y-auto p-4 md:p-8 space-y-8 max-w-[1600px] mx-auto w-full">
                     {/* Top Bar / Filters */}
-                    <div className="flex justify-between items-center bg-white p-4 rounded-3xl border border-border shadow-sm">
-                        <div className="flex items-center gap-4">
-                            <div className="flex items-center gap-2 px-4 py-2 bg-background-app rounded-xl text-sm font-bold border border-border">
-                                <Calendar size={18} />
+                    <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:justify-between sm:items-center bg-white p-4 rounded-2xl md:rounded-3xl border border-border shadow-sm">
+                        <div className="flex flex-wrap items-center gap-2 sm:gap-4">
+                            <div className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-background-app rounded-xl text-xs sm:text-sm font-bold border border-border">
+                                <Calendar size={16} className="sm:w-[18px] sm:h-[18px]" />
                                 This Month
                             </div>
-                            <div className="flex items-center gap-2 px-4 py-2 bg-background-app rounded-xl text-sm font-bold border border-border">
-                                <Filter size={18} />
+                            <div className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-background-app rounded-xl text-xs sm:text-sm font-bold border border-border">
+                                <Filter size={16} className="sm:w-[18px] sm:h-[18px]" />
                                 All Categories
                             </div>
                         </div>
                         <button
                             onClick={() => exportToCSV(stats.recentSales, "Sonnet_POS_Sales_History")}
-                            className="flex items-center gap-2 px-6 py-2 bg-primary text-white rounded-xl font-bold text-sm hover:bg-primary-dark transition-all disabled:opacity-50"
+                            className="flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 bg-primary text-white rounded-xl font-bold text-xs sm:text-sm hover:bg-primary-dark transition-all disabled:opacity-50 w-full sm:w-auto"
                             disabled={!summary}
                         >
                             <Download size={18} />
@@ -93,39 +93,39 @@ export default function ReportsPage() {
                     </div>
 
                     {/* Detailed Transaction History */}
-                    <div className="bg-white rounded-[40px] border border-border shadow-sm overflow-hidden min-h-[500px]">
-                        <div className="px-8 py-6 border-b border-border flex justify-between items-center bg-gray-50/50">
-                            <h3 className="text-xl font-black text-primary">Full Sales History</h3>
-                            <span className="text-xs font-black text-text-secondary uppercase tracking-widest">{stats.salesCount} RECORDS</span>
+                    <div className="bg-white rounded-2xl md:rounded-[40px] border border-border shadow-sm overflow-hidden min-h-[400px]">
+                        <div className="px-4 md:px-8 py-4 md:py-6 border-b border-border flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 bg-gray-50/50">
+                            <h3 className="text-lg md:text-xl font-black text-primary">Full Sales History</h3>
+                            <span className="text-[10px] md:text-xs font-black text-text-secondary uppercase tracking-widest">{stats.salesCount} RECORDS</span>
                         </div>
-                        <div className="overflow-x-auto">
-                            <table className="w-full text-left">
+                        <div className="overflow-x-auto custom-scrollbar">
+                            <table className="w-full min-w-[640px] text-left">
                                 <thead>
                                     <tr className="bg-background-app/50 text-[10px] uppercase font-black tracking-wider text-text-secondary border-b border-border">
-                                        <th className="px-8 py-4">Transaction ID</th>
-                                        <th className="px-8 py-4">Date & Time</th>
-                                        <th className="px-8 py-4">Status</th>
-                                        <th className="px-8 py-4">Method</th>
-                                        <th className="px-8 py-4 text-right">Net Amount</th>
-                                        <th className="px-8 py-4 text-right">Actions</th>
+                                        <th className="px-4 md:px-8 py-3 md:py-4">Transaction ID</th>
+                                        <th className="px-4 md:px-8 py-3 md:py-4">Date & Time</th>
+                                        <th className="px-4 md:px-8 py-3 md:py-4">Status</th>
+                                        <th className="px-4 md:px-8 py-3 md:py-4">Method</th>
+                                        <th className="px-4 md:px-8 py-3 md:py-4 text-right">Net Amount</th>
+                                        <th className="px-4 md:px-8 py-3 md:py-4 text-right">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-border">
                                     {stats.recentSales.length === 0 ? (
-                                        <tr><td colSpan={6} className="py-20 text-center font-bold text-text-disabled uppercase">{!summary ? 'Error loading sales history' : 'No sales history found'}</td></tr>
+                                        <tr><td colSpan={6} className="py-16 md:py-20 text-center font-bold text-text-disabled uppercase text-xs md:text-sm">{!summary ? 'Error loading sales history' : 'No sales history found'}</td></tr>
                                     ) : (
                                         stats.recentSales.map((sale: any, i: number) => (
                                             <tr key={i} className="hover:bg-gray-50/50 transition-colors group">
-                                                <td className="px-8 py-5 text-sm font-black text-primary uppercase">#{(sale.id || '---').slice(0, 8)}</td>
-                                                <td className="px-8 py-5 text-xs font-bold text-text-secondary">{new Date(sale.created_at).toLocaleString()}</td>
-                                                <td className="px-8 py-5">
-                                                    <span className="px-3 py-1 bg-accent/10 text-accent rounded-full text-[10px] font-black uppercase tracking-tighter">Completed</span>
+                                                <td className="px-4 md:px-8 py-4 md:py-5 text-xs sm:text-sm font-black text-primary uppercase">#{(sale.id || '---').slice(0, 8)}</td>
+                                                <td className="px-4 md:px-8 py-4 md:py-5 text-[10px] sm:text-xs font-bold text-text-secondary whitespace-nowrap">{new Date(sale.created_at).toLocaleString()}</td>
+                                                <td className="px-4 md:px-8 py-4 md:py-5">
+                                                    <span className="px-2 sm:px-3 py-1 bg-accent/10 text-accent rounded-full text-[10px] font-black uppercase tracking-tighter">Completed</span>
                                                 </td>
-                                                <td className="px-8 py-5">
-                                                    <span className="px-3 py-1 bg-background-app text-text-secondary rounded-full text-[10px] font-black uppercase tracking-widest border border-border">{sale.payment_method || 'CASH'}</span>
+                                                <td className="px-4 md:px-8 py-4 md:py-5">
+                                                    <span className="px-2 sm:px-3 py-1 bg-background-app text-text-secondary rounded-full text-[10px] font-black uppercase tracking-widest border border-border">{sale.payment_method || 'CASH'}</span>
                                                 </td>
-                                                <td className="px-8 py-5 text-right font-black text-primary">₵{(sale.total_amount || 0).toFixed(2)}</td>
-                                                <td className="px-8 py-5 text-right">
+                                                <td className="px-4 md:px-8 py-4 md:py-5 text-right font-black text-primary text-sm">₵{(sale.total_amount || 0).toFixed(2)}</td>
+                                                <td className="px-4 md:px-8 py-4 md:py-5 text-right">
                                                     <button className="p-2 text-text-disabled hover:text-secondary rounded-xl transition-all"><ExternalLink size={18} /></button>
                                                 </td>
                                             </tr>
@@ -149,7 +149,7 @@ function ReportSummaryCard({ icon, label, value, color }: any) {
         amber: "bg-amber-50 text-warning"
     };
     return (
-        <div className="bg-white p-6 rounded-3xl border border-border shadow-sm flex items-center gap-4">
+        <div className="bg-white p-4 md:p-6 rounded-2xl md:rounded-3xl border border-border shadow-sm flex items-center gap-3 md:gap-4">
             <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${colors[color]}`}>
                 {icon}
             </div>

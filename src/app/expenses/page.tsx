@@ -49,7 +49,7 @@ export default function ExpensesPage() {
         <div className="flex bg-background-app min-h-screen text-text-primary">
             <Sidebar />
 
-            <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
+            <main className="flex-1 flex flex-col min-w-0 overflow-hidden pl-14 md:pl-0">
                 <Header title="Expense Tracking" />
 
                 <div className="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 max-w-[1600px] mx-auto w-full">
@@ -86,54 +86,54 @@ export default function ExpensesPage() {
 
                     {/* Expense List */}
                     <div className="bg-white rounded-3xl shadow-sm border border-border overflow-hidden min-h-[400px]">
-                        <div className="px-6 py-5 border-b border-border flex justify-between items-center bg-gray-50/30">
-                            <div className="relative group w-80">
+                        <div className="px-4 md:px-6 py-4 md:py-5 border-b border-border flex flex-col sm:flex-row gap-3 justify-between items-stretch sm:items-center bg-gray-50/30">
+                            <div className="relative group w-full sm:w-80 flex-1 sm:flex-none">
                                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-text-disabled group-focus-within:text-error transition-colors" size={18} />
                                 <input type="text" placeholder="Search expenses..." className="w-full pl-10 pr-4 py-2.5 bg-white border border-border rounded-xl text-sm focus:ring-4 focus:ring-error/5 focus:border-error/30 transition-all" />
                             </div>
-                            <div className="flex gap-2">
+                            <div className="flex gap-2 flex-shrink-0">
                                 <button className="p-2.5 hover:bg-gray-100 rounded-xl transition-all border border-border bg-white"><Filter size={18} /></button>
                             </div>
                         </div>
 
-                        <div className="overflow-x-auto">
-                            <table className="w-full text-left">
+                        <div className="overflow-x-auto custom-scrollbar">
+                            <table className="w-full min-w-[600px] text-left">
                                 <thead>
                                     <tr className="bg-background-app/50 text-[10px] uppercase font-black tracking-wider text-text-secondary border-b border-border">
-                                        <th className="px-6 py-4">Expense Details</th>
-                                        <th className="px-6 py-4">Vendor</th>
-                                        <th className="px-6 py-4">Category</th>
-                                        <th className="px-6 py-4">Date</th>
-                                        <th className="px-6 py-4 text-right">Amount</th>
-                                        <th className="px-6 py-4 text-right">Action</th>
+                                        <th className="px-3 sm:px-6 py-3 md:py-4">Expense Details</th>
+                                        <th className="px-3 sm:px-6 py-3 md:py-4">Vendor</th>
+                                        <th className="px-3 sm:px-6 py-3 md:py-4">Category</th>
+                                        <th className="px-3 sm:px-6 py-3 md:py-4">Date</th>
+                                        <th className="px-3 sm:px-6 py-3 md:py-4 text-right">Amount</th>
+                                        <th className="px-3 sm:px-6 py-3 md:py-4 text-right">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-border">
                                     {loading ? (
-                                        <tr><td colSpan={5} className="py-20 text-center"><Loader2 className="animate-spin mx-auto text-error" /></td></tr>
+                                        <tr><td colSpan={6} className="py-16 md:py-20 text-center"><Loader2 className="animate-spin mx-auto text-error" /></td></tr>
                                     ) : expenses.length === 0 ? (
-                                        <tr><td colSpan={5} className="py-20 text-center text-text-disabled font-bold uppercase text-xs">No expenses recorded.</td></tr>
+                                        <tr><td colSpan={6} className="py-16 md:py-20 text-center text-text-disabled font-bold uppercase text-xs">No expenses recorded.</td></tr>
                                     ) : (
                                         expenses.map((expense) => (
                                             <tr key={expense.id} className="hover:bg-error/[0.01] group">
-                                                <td className="px-6 py-5">
+                                                <td className="px-3 sm:px-6 py-4 md:py-5">
                                                     <div className="flex items-center gap-4">
                                                         <div className="p-3 bg-red-50 text-error rounded-xl"><DollarSign size={18} /></div>
                                                         <span className="text-sm font-black text-primary">{expense.description || 'General Expense'}</span>
                                                     </div>
                                                 </td>
-                                                <td className="px-6 py-5">
-                                                    <div className="flex items-center gap-2">
-                                                        <Truck size={14} className="text-text-disabled" />
-                                                        <span className="text-xs font-bold text-text-secondary">{expense.vendor || 'N/A'}</span>
+                                                <td className="px-3 sm:px-6 py-4 md:py-5">
+                                                    <div className="flex items-center gap-2 min-w-0">
+                                                        <Truck size={14} className="text-text-disabled flex-shrink-0" />
+                                                        <span className="text-xs font-bold text-text-secondary truncate max-w-[100px] sm:max-w-none">{expense.vendor || 'N/A'}</span>
                                                     </div>
                                                 </td>
-                                                <td className="px-6 py-5">
-                                                    <span className="text-[10px] font-black uppercase px-3 py-1.5 bg-background-app rounded-xl border border-border">{expense.category}</span>
+                                                <td className="px-3 sm:px-6 py-4 md:py-5">
+                                                    <span className="text-[10px] font-black uppercase px-2 sm:px-3 py-1 sm:py-1.5 bg-background-app rounded-lg md:rounded-xl border border-border whitespace-nowrap">{expense.category}</span>
                                                 </td>
-                                                <td className="px-6 py-5 text-sm font-bold text-text-secondary italic">{new Date(expense.expense_date).toLocaleDateString()}</td>
-                                                <td className="px-6 py-5 text-right font-black text-error italic">₵{expense.amount.toFixed(2)}</td>
-                                                <td className="px-6 py-5 text-right">
+                                                <td className="px-3 sm:px-6 py-4 md:py-5 text-xs sm:text-sm font-bold text-text-secondary italic whitespace-nowrap">{new Date(expense.expense_date).toLocaleDateString()}</td>
+                                                <td className="px-3 sm:px-6 py-4 md:py-5 text-right font-black text-error italic text-sm">₵{expense.amount.toFixed(2)}</td>
+                                                <td className="px-3 sm:px-6 py-4 md:py-5 text-right">
                                                     <button className="p-2 text-text-disabled hover:text-error rounded-xl transition-all opacity-0 group-hover:opacity-100"><Trash2 size={16} /></button>
                                                 </td>
                                             </tr>
@@ -184,7 +184,7 @@ function ExpenseForm({ onSuccess }: { onSuccess: () => void }) {
 
     return (
         <form className="space-y-6" onSubmit={handleSubmit}>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
                     <label className="text-xs font-bold uppercase tracking-widest text-text-secondary ml-1">Reason / Description</label>
                     <div className="relative group">
@@ -201,7 +201,7 @@ function ExpenseForm({ onSuccess }: { onSuccess: () => void }) {
                 </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
                     <label className="text-xs font-bold uppercase tracking-widest text-text-secondary ml-1">Amount (GHS)</label>
                     <div className="relative group">

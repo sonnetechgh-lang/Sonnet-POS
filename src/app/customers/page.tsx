@@ -54,7 +54,7 @@ export default function CustomersPage() {
         <div className="flex bg-background-app min-h-screen text-text-primary">
             <Sidebar />
 
-            <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
+            <main className="flex-1 flex flex-col min-w-0 overflow-hidden pl-14 md:pl-0">
                 <Header title="Customer Relationship Management" />
 
                 <div className="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 max-w-[1600px] mx-auto w-full">
@@ -223,7 +223,7 @@ function CustomerForm({ onSuccess }: { onSuccess: () => void }) {
                 <input required value={formData.full_name} onChange={e => setFormData({ ...formData, full_name: e.target.value })} type="text" placeholder="e.g. Ama Ghana" className="crm-input" />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
                     <label className="text-xs font-black uppercase tracking-widest text-text-secondary ml-1">Phone Number</label>
                     <input required value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} type="text" placeholder="024 XXX XXXX" className="crm-input" />

@@ -68,10 +68,10 @@ export default function AnalyticsPage() {
         <div className="flex bg-background-app min-h-screen text-text-primary">
             <Sidebar />
 
-            <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
-                <div className="flex justify-between items-center bg-white border-b border-border px-8 py-4">
+            <main className="flex-1 flex flex-col min-w-0 overflow-hidden pl-14 md:pl-0">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 bg-white border-b border-border px-4 md:px-8 py-4">
                     <Header title="Advanced Intelligence" />
-                    <div className="flex items-center gap-2 bg-background-app p-1.5 rounded-2xl border border-border">
+                    <div className="flex flex-wrap items-center gap-2 bg-background-app p-1.5 rounded-2xl border border-border w-full sm:w-auto">
                         {[
                             { id: "all", label: "All Time" },
                             { id: "today", label: "Today" },
@@ -108,7 +108,7 @@ export default function AnalyticsPage() {
 
                     {/* Peak Hour Hero */}
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        <div className="lg:col-span-2 bg-gradient-to-br from-primary to-primary-dark rounded-[40px] p-8 text-white relative overflow-hidden shadow-2xl">
+                        <div className="lg:col-span-2 bg-gradient-to-br from-primary to-primary-dark rounded-2xl md:rounded-[40px] p-4 md:p-8 text-white relative overflow-hidden shadow-2xl">
                             <div className="relative z-10">
                                 <div className="flex items-center gap-2">
                                     <span className="px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full text-[10px] font-black uppercase tracking-widest border border-white/20">Operations Insight</span>
@@ -116,7 +116,7 @@ export default function AnalyticsPage() {
                                         <Zap size={12} /> Live Processing
                                     </div>
                                 </div>
-                                <h3 className="text-4xl font-black mt-6 tracking-tight text-white">Peak Performance</h3>
+                                <h3 className="text-2xl sm:text-3xl md:text-4xl font-black mt-4 md:mt-6 tracking-tight text-white">Peak Performance</h3>
                                 <p className="text-blue-100/60 mt-2 font-medium max-w-md italic">
                                     Viewing activity distribution for <span className="text-secondary font-black">{range.toUpperCase()}</span> period.
                                 </p>
@@ -147,14 +147,14 @@ export default function AnalyticsPage() {
                             <div className="absolute -top-24 -right-24 w-64 h-64 bg-secondary/10 rounded-full blur-3xl"></div>
                         </div>
 
-                        <div className="bg-white rounded-[40px] border border-border p-8 shadow-sm flex flex-col justify-between overflow-hidden relative">
+                        <div className="bg-white rounded-2xl md:rounded-[40px] border border-border p-4 md:p-8 shadow-sm flex flex-col justify-between overflow-hidden relative">
                             <div className="relative z-10">
                                 <div className="w-12 h-12 bg-amber-50 text-warning rounded-2xl flex items-center justify-center mb-6">
                                     <Target size={24} />
                                 </div>
                                 <h4 className="text-xl font-black text-primary uppercase tracking-tight">Retention Key</h4>
                                 <div className="mt-4 flex items-baseline gap-2">
-                                    <span className="text-5xl font-black text-secondary">{retentionRate.toFixed(1)}%</span>
+                                    <span className="text-3xl sm:text-4xl md:text-5xl font-black text-secondary">{retentionRate.toFixed(1)}%</span>
                                     <span className="text-[10px] font-bold text-text-secondary uppercase">Return Rate</span>
                                 </div>
                                 <p className="text-[11px] text-text-secondary font-medium mt-4">Percentage of unique customers who have completed more than one transaction in this period.</p>
@@ -178,8 +178,8 @@ export default function AnalyticsPage() {
 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                         {/* Top Products */}
-                        <div className="bg-white rounded-[40px] border border-border shadow-sm overflow-hidden flex flex-col">
-                            <div className="px-8 py-6 border-b border-border flex justify-between items-center bg-gray-50/30">
+                        <div className="bg-white rounded-2xl md:rounded-[40px] border border-border shadow-sm overflow-hidden flex flex-col">
+                            <div className="px-4 md:px-8 py-4 md:py-6 border-b border-border flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 bg-gray-50/30">
                                 <div className="flex items-center gap-3">
                                     <Flame size={20} className="text-error" />
                                     <h3 className="text-lg font-black text-primary uppercase tracking-tight">Inventory Leaders</h3>
@@ -217,8 +217,8 @@ export default function AnalyticsPage() {
                         </div>
 
                         {/* Category Mix */}
-                        <div className="bg-white rounded-[40px] border border-border shadow-sm overflow-hidden flex flex-col">
-                            <div className="px-8 py-6 border-b border-border bg-gray-50/30">
+                        <div className="bg-white rounded-2xl md:rounded-[40px] border border-border shadow-sm overflow-hidden flex flex-col">
+                            <div className="px-4 md:px-8 py-4 md:py-6 border-b border-border bg-gray-50/30">
                                 <div className="flex items-center gap-3">
                                     <PieChart size={20} className="text-secondary" />
                                     <h3 className="text-lg font-black text-primary uppercase tracking-tight">Category Contribution</h3>
@@ -250,7 +250,7 @@ export default function AnalyticsPage() {
                                     )}
                                 </div>
 
-                                <div className="mt-12 p-8 bg-primary/5 rounded-[32px] border border-primary/10 relative overflow-hidden">
+                                <div className="mt-6 md:mt-12 p-4 md:p-8 bg-primary/5 rounded-2xl md:rounded-[32px] border border-primary/10 relative overflow-hidden">
                                     <div className="relative z-10 flex items-center gap-5">
                                         <div className="w-16 h-16 bg-white rounded-2xl shadow-xl flex items-center justify-center"><Award size={32} className="text-warning" /></div>
                                         <div>

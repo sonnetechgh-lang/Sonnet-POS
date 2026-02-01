@@ -62,7 +62,7 @@ export default function Dashboard() {
         <div className="flex bg-background-app min-h-screen text-text-primary flex-col md:flex-row">
             <Sidebar />
 
-            <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
+            <main className="flex-1 flex flex-col min-w-0 overflow-hidden pl-14 md:pl-0">
                 <Header title="Business Overview" />
 
                 <div className="flex-1 overflow-y-auto p-3 md:p-4 lg:p-8 space-y-6 md:space-y-8 max-w-[1600px] mx-auto w-full">
@@ -201,15 +201,15 @@ export default function Dashboard() {
                         {/* Stock Alerts */}
                         <div className="bg-white rounded-[40px] border border-border shadow-sm overflow-hidden">
                             <div className="px-8 py-6 border-b border-border flex justify-between items-center bg-gray-50/30">
-                                <h3 className="text-lg font-black text-primary">Critical Stock Alerts</h3>
-                                <span className="text-xs font-black px-3 py-1 bg-error/10 text-error rounded-full uppercase tracking-tighter">Action Required</span>
+                                <h3 className="text-base md:text-lg font-black text-primary">Critical Stock Alerts</h3>
+                                <span className="text-[10px] md:text-xs font-black px-3 py-1 bg-error/10 text-error rounded-full uppercase tracking-tighter">Action Required</span>
                             </div>
-                            <div className="p-4 space-y-3">
+                            <div className="p-3 md:p-4 space-y-3">
                                 <StockAlertItem title="Panadol Extra" status="Low Stock" count={5} />
                                 <StockAlertItem title="Vitamin C Syrup" status="Out of Stock" count={0} warning />
                                 <StockAlertItem title="C-Zin Lozenges" status="Low Stock" count={12} />
                             </div>
-                            <div className="p-6 pt-0">
+                            <div className="p-4 md:p-6 pt-0">
                                 <Link href="/inventory" className="w-full py-4 bg-background-app text-primary font-bold rounded-2xl flex items-center justify-center gap-2 hover:bg-gray-100 transition-all">
                                     Restock Inventory
                                 </Link>
@@ -232,13 +232,13 @@ function StatCard({ label, value, trend, trendUp, icon, color }: any) {
     };
 
     return (
-        <div className="bg-white p-8 rounded-[40px] border border-border shadow-sm hover:shadow-xl hover:shadow-primary/5 transition-all">
-            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 ${colorMap[color]}`}>
+        <div className="bg-white p-4 sm:p-6 md:p-8 rounded-2xl md:rounded-[40px] border border-border shadow-sm hover:shadow-xl hover:shadow-primary/5 transition-all">
+            <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl md:rounded-2xl flex items-center justify-center mb-3 sm:mb-6 ${colorMap[color]}`}>
                 {icon}
             </div>
-            <p className="text-xs font-bold text-text-secondary uppercase tracking-widest">{label}</p>
-            <div className="mt-2 flex items-baseline justify-between">
-                <h4 className="text-2xl font-black text-primary tracking-tight">{value}</h4>
+            <p className="text-[10px] sm:text-xs font-bold text-text-secondary uppercase tracking-widest">{label}</p>
+            <div className="mt-1 sm:mt-2 flex items-baseline justify-between gap-2">
+                <h4 className="text-lg sm:text-xl md:text-2xl font-black text-primary tracking-tight truncate">{value}</h4>
                 <span className={`text-[10px] font-black px-2 py-0.5 rounded-full ${trendUp ? 'bg-green-50 text-accent' : 'bg-red-50 text-error'}`}>
                     {trend}
                 </span>

@@ -177,17 +177,17 @@ export default function POSPage() {
             <div className="print:hidden h-full flex w-full">
                 <Sidebar />
 
-                <main className="flex-1 flex flex-col min-w-0">
-                    <div className="flex flex-1 overflow-hidden">
+                <main className="flex-1 flex flex-col min-w-0 pl-14 md:pl-0">
+                    <div className="flex flex-1 flex-col lg:flex-row overflow-hidden min-h-0">
 
                         {/* Product Grid */}
-                        <div className="flex-1 flex flex-col p-6 space-y-6 overflow-hidden">
-                            <header className="flex justify-between items-center">
-                                <div>
-                                    <h2 className="text-2xl font-black text-primary tracking-tight">Terminal 01</h2>
-                                    <p className="text-xs text-text-secondary font-bold uppercase tracking-widest">Speed Mode Active</p>
+                        <div className="flex-1 flex flex-col p-3 sm:p-4 md:p-6 space-y-4 md:space-y-6 overflow-hidden min-h-0">
+                            <header className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-between items-stretch sm:items-center flex-shrink-0">
+                                <div className="min-w-0">
+                                    <h2 className="text-xl sm:text-2xl font-black text-primary tracking-tight truncate">Terminal 01</h2>
+                                    <p className="text-[10px] sm:text-xs text-text-secondary font-bold uppercase tracking-widest">Speed Mode Active</p>
                                 </div>
-                                <div className="relative w-96 group">
+                                <div className="relative w-full sm:w-80 lg:w-96 group flex-shrink-0">
                                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-text-disabled group-focus-within:text-secondary transition-colors" size={20} />
                                     <input
                                         ref={searchInputRef}
@@ -200,7 +200,7 @@ export default function POSPage() {
                                 </div>
                             </header>
 
-                            <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                            <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 min-h-0">
                                 {loading ? (
                                     Array(8).fill(0).map((_, i) => <div key={i} className="bg-gray-100 rounded-[28px] animate-pulse h-48" />)
                                 ) : (
@@ -212,8 +212,8 @@ export default function POSPage() {
                         </div>
 
                         {/* Cart */}
-                        <div className="w-[420px] bg-white border-l border-border flex flex-col shadow-2xl">
-                            <div className="p-6 border-b border-border flex justify-between items-center bg-gray-50/50">
+                        <div className="w-full lg:w-[420px] min-h-[320px] lg:min-h-0 lg:max-h-full bg-white border-t lg:border-t-0 lg:border-l border-border flex flex-col shadow-2xl flex-shrink-0">
+                            <div className="p-4 md:p-6 border-b border-border flex justify-between items-center bg-gray-50/50 flex-shrink-0">
                                 <div className="flex items-center gap-3"><div className="p-2 rounded-xl bg-primary text-white"><ShoppingCart size={20} /></div><h3 className="text-xl font-black text-primary">Cart</h3></div>
                                 <span className="text-xs font-black px-3 py-1 bg-secondary text-white rounded-full">{cart.length}</span>
                             </div>
@@ -293,7 +293,7 @@ export default function POSPage() {
                                 </AnimatePresence>
                             </div>
 
-                            <div className="p-8 bg-gray-50 border-t border-border space-y-6">
+                            <div className="p-4 md:p-6 lg:p-8 bg-gray-50 border-t border-border space-y-4 md:space-y-6 flex-shrink-0">
                                 <div className="space-y-3">
                                     <div className="flex justify-between text-sm font-black text-text-secondary"><span>Subtotal</span><span>₵{subtotal.toFixed(2)}</span></div>
                                     {discountAmount > 0 && (
@@ -305,10 +305,10 @@ export default function POSPage() {
                                     <div className="flex justify-between text-sm font-black text-text-secondary"><span>VAT (5%)</span><span>₵{tax.toFixed(2)}</span></div>
                                     <div className="pt-3 border-t border-border flex justify-between items-end">
                                         <span className="text-sm font-black text-text-secondary uppercase">Total Payable</span>
-                                        <span className="text-3xl font-black text-primary tracking-tight font-mono leading-none">₵{total.toFixed(2)}</span>
+                                        <span className="text-2xl sm:text-3xl font-black text-primary tracking-tight font-mono leading-none">₵{total.toFixed(2)}</span>
                                     </div>
                                 </div>
-                                <div className="grid grid-cols-3 gap-3">
+                                <div className="grid grid-cols-3 gap-2 sm:gap-3">
                                     <PaymentCard icon={<Banknote />} label="Cash" active={paymentMethod === 'cash'} onClick={() => setPaymentMethod('cash')} />
                                     <PaymentCard icon={<Smartphone />} label="MoMo" active={paymentMethod === 'momo'} onClick={() => setPaymentMethod('momo')} />
                                     <PaymentCard icon={<CreditCard />} label="Card" active={paymentMethod === 'card'} onClick={() => setPaymentMethod('card')} />

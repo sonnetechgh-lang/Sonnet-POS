@@ -103,7 +103,7 @@ export default function InventoryPage() {
         <div className="flex bg-background-app min-h-screen text-text-primary">
             <Sidebar />
 
-            <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
+            <main className="flex-1 flex flex-col min-w-0 overflow-hidden pl-14 md:pl-0">
                 <Header title="Inventory Management" />
 
                 <div className="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 max-w-[1600px] mx-auto w-full">
@@ -146,16 +146,16 @@ export default function InventoryPage() {
                         <InventoryStat icon={<Trash2 />} label="Out of Stock" value={stats.outOfStock.toString()} color="red" border />
                     </div>
 
-                    <div className="bg-white rounded-3xl shadow-sm border border-border overflow-hidden min-h-[400px] flex flex-col">
-                        <div className="overflow-x-auto flex-1">
-                            <table className="w-full text-left border-collapse">
+                    <div className="bg-white rounded-2xl md:rounded-3xl shadow-sm border border-border overflow-hidden min-h-[400px] flex flex-col">
+                        <div className="overflow-x-auto flex-1 custom-scrollbar">
+                            <table className="w-full min-w-[640px] text-left border-collapse">
                                 <thead>
                                     <tr className="bg-background-app/50 text-[10px] uppercase tracking-wider text-text-secondary font-bold border-b border-border">
-                                        <th className="px-6 py-4 font-black">Product Details</th>
-                                        <th className="px-6 py-4 font-black">Category</th>
-                                        <th className="px-6 py-4 font-black">Price (GHS)</th>
-                                        <th className="px-6 py-4 font-black">Stock</th>
-                                        <th className="px-6 py-4 font-black text-right">Actions</th>
+                                        <th className="px-3 sm:px-6 py-3 md:py-4 font-black">Product Details</th>
+                                        <th className="px-3 sm:px-6 py-3 md:py-4 font-black">Category</th>
+                                        <th className="px-3 sm:px-6 py-3 md:py-4 font-black">Price (GHS)</th>
+                                        <th className="px-3 sm:px-6 py-3 md:py-4 font-black">Stock</th>
+                                        <th className="px-3 sm:px-6 py-3 md:py-4 font-black text-right">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-border relative">
@@ -237,26 +237,26 @@ function ProductRow({ product, onDelete, onEdit }: any) {
 
     return (
         <tr className="group hover:bg-secondary/[0.02] transition-colors">
-            <td className="px-6 py-5">
-                <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-background-app flex items-center justify-center text-text-secondary border border-border">
-                        <Package size={24} />
+            <td className="px-3 sm:px-6 py-4 md:py-5">
+                <div className="flex items-center gap-3 md:gap-4">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl md:rounded-2xl bg-background-app flex items-center justify-center text-text-secondary border border-border flex-shrink-0">
+                        <Package size={20} className="sm:w-6 sm:h-6" />
                     </div>
-                    <div className="flex flex-col">
-                        <p className="text-sm font-black text-primary">{product.name}</p>
+                    <div className="flex flex-col min-w-0">
+                        <p className="text-xs sm:text-sm font-black text-primary truncate max-w-[140px] sm:max-w-none">{product.name}</p>
                         <p className="text-[10px] font-bold text-text-disabled uppercase tracking-widest">{product.sku || 'NO SKU'}</p>
                     </div>
                 </div>
             </td>
-            <td className="px-6 py-5">
-                <span className="text-xs font-bold px-3 py-1.5 bg-primary/5 text-primary-light rounded-xl">
+            <td className="px-3 sm:px-6 py-4 md:py-5">
+                <span className="text-[10px] sm:text-xs font-bold px-2 sm:px-3 py-1 sm:py-1.5 bg-primary/5 text-primary-light rounded-lg md:rounded-xl whitespace-nowrap">
                     {product.categories?.name || 'Uncategorized'}
                 </span>
             </td>
-            <td className="px-6 py-5 font-black text-sm text-primary">₵{product.price.toFixed(2)}</td>
-            <td className="px-6 py-5">
+            <td className="px-3 sm:px-6 py-4 md:py-5 font-black text-xs sm:text-sm text-primary whitespace-nowrap">₵{product.price.toFixed(2)}</td>
+            <td className="px-3 sm:px-6 py-4 md:py-5">
                 <div className="flex flex-col gap-1">
-                    <span className={`text-sm font-black ${isOutOfStock ? 'text-error' : isLowStock ? 'text-warning' : 'text-primary'}`}>
+                    <span className={`text-xs sm:text-sm font-black ${isOutOfStock ? 'text-error' : isLowStock ? 'text-warning' : 'text-primary'}`}>
                         {product.stock_quantity} units
                     </span>
                     {(isLowStock || isOutOfStock) && (
@@ -266,8 +266,8 @@ function ProductRow({ product, onDelete, onEdit }: any) {
                     )}
                 </div>
             </td>
-            <td className="px-6 py-5 text-right">
-                <div className="flex items-center justify-end gap-2">
+            <td className="px-3 sm:px-6 py-4 md:py-5 text-right">
+                <div className="flex items-center justify-end gap-1 sm:gap-2">
                     <button onClick={onEdit} className="p-2 text-text-secondary hover:text-secondary rounded-xl transition-all"><Edit2 size={18} /></button>
                     <button
                         onClick={onDelete}

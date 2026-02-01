@@ -76,7 +76,7 @@ export default function SettingsPage() {
         return (
             <div className="flex bg-background-app min-h-screen">
                 <Sidebar />
-                <main className="flex-1 flex flex-col min-w-0">
+                <main className="flex-1 flex flex-col min-w-0 pl-14 md:pl-0 overflow-hidden">
                     <Header title="System Settings" />
                     <div className="flex-1 flex flex-col items-center justify-center gap-4 px-4">
                         {loading ? (
@@ -109,7 +109,7 @@ export default function SettingsPage() {
         <div className="flex bg-background-app min-h-screen text-text-primary">
             <Sidebar />
 
-            <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
+            <main className="flex-1 flex flex-col min-w-0 overflow-hidden pl-14 md:pl-0">
                 <Header title="System Settings" />
 
                 <div className="flex-1 overflow-y-auto p-4 md:p-8 max-w-[1200px] mx-auto w-full">
@@ -131,12 +131,12 @@ export default function SettingsPage() {
                                 animate={{ opacity: 1, y: 0 }}
                                 className="bg-white rounded-[40px] border border-border shadow-sm overflow-hidden"
                             >
-                                <div className="p-8 border-b border-border bg-gray-50/30">
-                                    <h2 className="text-xl font-black text-primary uppercase tracking-tight">Business Profile</h2>
-                                    <p className="text-xs font-bold text-text-secondary mt-1">Configure how your shop appears on receipts and reports.</p>
+                                <div className="p-4 md:p-8 border-b border-border bg-gray-50/30">
+                                    <h2 className="text-lg md:text-xl font-black text-primary uppercase tracking-tight">Business Profile</h2>
+                                    <p className="text-[10px] md:text-xs font-bold text-text-secondary mt-1">Configure how your shop appears on receipts and reports.</p>
                                 </div>
 
-                                <form onSubmit={handleSave} className="p-8 space-y-6">
+                                <form onSubmit={handleSave} className="p-4 md:p-8 space-y-6">
                                     <div className="space-y-4">
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                             <div className="space-y-1.5">
@@ -213,7 +213,7 @@ export default function SettingsPage() {
                                 </form>
                             </motion.div>
 
-                            <div className="mt-8 p-8 bg-blue-50/50 rounded-[40px] border border-blue-100 flex items-center gap-6">
+                            <div className="mt-6 md:mt-8 p-4 md:p-8 bg-blue-50/50 rounded-2xl md:rounded-[40px] border border-blue-100 flex flex-col sm:flex-row items-start sm:items-center gap-4 md:gap-6">
                                 <div className="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center text-blue-500">
                                     <ShieldCheck size={32} />
                                 </div>
